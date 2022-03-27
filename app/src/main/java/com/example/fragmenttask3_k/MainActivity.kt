@@ -9,19 +9,19 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 
-class MainActivity : AppCompatActivity() {
 
+class MainActivity : AppCompatActivity(), CarAdapter.ItemClicked {
     var btnCarInfo: Button? = null
-    var btnOwnerInfo:Button? = null
+    var btnOwnerInfo: Button? = null
     var ivMake: ImageView? = null
     var tvModel: TextView? = null
-    var tvName:TextView? = null
-    var tvTel:TextView? = null
+    var tvName: TextView? = null
+    var tvTel: TextView? = null
     var fragmentManager: FragmentManager? = null
     var buttonFrag: Fragment? = null
-    var listFrag:Fragment? = null
-    var carInfoFrag:Fragment? = null
-    var ownerInfoFrag:Fragment? = null
+    var listFrag: Fragment? = null
+    var carInfoFrag: Fragment? = null
+    var ownerInfoFrag: Fragment? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,26 +35,22 @@ class MainActivity : AppCompatActivity() {
         tvTel = findViewById(R.id.tvTel)
 
         fragmentManager = supportFragmentManager
-
         listFrag = fragmentManager!!.findFragmentById(R.id.listFrag)
         buttonFrag = fragmentManager!!.findFragmentById(R.id.buttonFrag)
         carInfoFrag = fragmentManager!!.findFragmentById(R.id.carInfoFrag)
         ownerInfoFrag = fragmentManager!!.findFragmentById(R.id.ownerInfoFrag)
-
         fragmentManager!!.beginTransaction()
             .show(buttonFrag!!)
             .show(listFrag!!)
             .show(carInfoFrag!!)
             .hide(ownerInfoFrag!!)
             .commit()
-
         btnOwnerInfo!!.setOnClickListener(View.OnClickListener {
             fragmentManager!!.beginTransaction()
                 .hide(carInfoFrag!!)
                 .show(ownerInfoFrag!!)
                 .commit()
         })
-
         btnCarInfo!!.setOnClickListener(View.OnClickListener {
             fragmentManager!!.beginTransaction()
                 .show(carInfoFrag!!)
@@ -63,17 +59,16 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
-    fun onItemClicked(index: Int) {
-        tvName!!.setText(ApplicationClass.cars?.get(index)?.getOwnerName())
-        tvModel!!.setText(ApplicationClass.cars?.get(index)?.getModel())
-        tvTel!!.setText(ApplicationClass.cars?.get(index)?.getOwnerTel())
-        if (ApplicationClass.cars?.get(index)?.getMake().equals("Volswagen")) {
+    override fun onItemClicked(index: Int) {
+        tvName!!.text = ApplicationClass.cars!![index].getOwnerName()
+        tvModel!!.text = ApplicationClass.cars!![index].getModel()
+        tvTel!!.text = ApplicationClass.cars!![index].getOwnerTel()
+        if (ApplicationClass.cars!![index].getMake().equals("Volswagen")) {
             ivMake!!.setImageResource(R.drawable.volkswagen)
-        } else if (ApplicationClass.cars?.get(index)?.getMake().equals("Volswagen")) {
+        } else if (ApplicationClass.cars!![index].getMake().equals("Volswagen")) {
             ivMake!!.setImageResource(R.drawable.mercedes)
         } else {
             ivMake!!.setImageResource(R.drawable.mercedes)
         }
     }
-
 }
